@@ -1,8 +1,12 @@
 import React from "react";
-import {Container, Heading, VStack} from "@chakra-ui/react";
+import {Button, Container, Heading, IconButton, Tooltip, useDisclosure, VStack} from "@chakra-ui/react";
 import PageContent from "../../Utils/PageContent";
+import {InfoIcon} from "@chakra-ui/icons";
+import AboutModal from "../Components/AboutModal";
 
 const SearchPage = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  
   return (
     <PageContent 
       alignItems="center"
@@ -16,7 +20,25 @@ const SearchPage = () => {
           Musickr
         </Heading>
       </VStack>
-      
+      <Tooltip
+        hasArrow
+        label="About Musickr"
+      >
+        <IconButton 
+          onClick={onOpen}
+          icon={<InfoIcon />} 
+          variant="ghost"
+          aria-label="about musickr"
+          size="lg"
+          position="absolute"
+          right="4"
+          bottom="4"
+        />
+      </Tooltip>
+      <AboutModal
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </PageContent>
   );
 };
