@@ -1,9 +1,9 @@
-import Home from "./components/Home";
+import SearchPage from "./components/Search/Pages/SearchPage";
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <SearchPage />
   }
 ];
 
