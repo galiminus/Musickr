@@ -7,7 +7,8 @@ const PageContent = ({
 } : FlexProps) => {
   return (
     <Flex 
-      bgColor="red" 
+      bgColor="gray.50"
+      fontFamily="Montserrat"
       h="100vh"
       p="4"
       {...props}

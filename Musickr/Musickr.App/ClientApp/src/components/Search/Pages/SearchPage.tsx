@@ -9,7 +9,10 @@ const SearchPage = () => {
       justify="center"
     >
       <VStack>
-        <Heading>
+        <Heading 
+          size="4xl"
+          letterSpacing="0.2rem"
+        >
           Musickr
         </Heading>
       </VStack>
