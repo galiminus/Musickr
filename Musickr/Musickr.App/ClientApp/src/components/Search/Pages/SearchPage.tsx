@@ -3,6 +3,7 @@ import {Button, Container, Heading, IconButton, Tooltip, useDisclosure, VStack} 
 import PageContent from "../../Utils/PageContent";
 import {InfoIcon} from "@chakra-ui/icons";
 import AboutModal from "../Components/AboutModal";
+import SearchBar from "../Components/SearchBar";
 
 const SearchPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -19,6 +20,7 @@ const SearchPage = () => {
         >
           Musickr
         </Heading>
+        <SearchBar />
       </VStack>
       <Tooltip
         hasArrow
