@@ -1,7 +1,19 @@
-import React, {ChangeEvent, useEffect, useState} from "react"
-import {AutoComplete, AutoCompleteInput, AutoCompleteItem, AutoCompleteList} from "@choc-ui/chakra-autocomplete";
-import {useQuery} from "react-query";
+import React, {
+  ChangeEvent, 
+  useState
+} from "react"
+
+import {HStack, Icon, Text} from "@chakra-ui/react";
+import {MdPlace} from "react-icons/md";
+import {
+  AutoComplete, 
+  AutoCompleteInput, 
+  AutoCompleteItem, 
+  AutoCompleteList
+} from "@choc-ui/chakra-autocomplete";
+
 import {useDebounce} from "react-use";
+
 import useGetUsersAndPlaces from "../../Utils/Hooks/useGetUsersAndPlaces";
 
 const SearchBar = () => {
@@ -22,7 +34,6 @@ const SearchBar = () => {
   
   const { isLoading, error, data } = useGetUsersAndPlaces(searchContentDebounced);
   
-  console.log(data)
   return (
     <AutoComplete openOnFocus isLoading={isLoading}>
       <AutoCompleteInput 
@@ -34,6 +45,22 @@ const SearchBar = () => {
         onChange={handleInput}
       />
       <AutoCompleteList>
+        {data?.map((place) => (
+          <AutoCompleteItem
+            key={place.name}
+            value={place.name}
+          >
+            <HStack justifyContent="center">
+              <Icon as={MdPlace} />
+              <Text 
+                fontSize="lg" 
+                m="0"
+              >
+                {place.name}
+              </Text>
+            </HStack>
+          </AutoCompleteItem>
+        ))}
       </AutoCompleteList>
     </AutoComplete>
   )
