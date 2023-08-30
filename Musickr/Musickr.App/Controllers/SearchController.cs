@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Musickr.App.Models;
 
 namespace Musickr.App.Controllers;
@@ -23,8 +24,18 @@ public class SearchController : ControllerBase
         using var client = new HttpClient();
 
         var clientId = _configuration["ClientId"];
+        
+        var parameters = new List<KeyValuePair<string, string>>
+        {
+            new ("q", q),
+            new ("facet", "place"),
+            new ("client_id", clientId),
+            new ("limit", "20")
+        };
+        var urlWithParams = QueryHelpers.AddQueryString("https://api-v2.soundcloud.com/search/users?", parameters);
+        
         var result = 
-            await client.GetAsync($"https://api-v2.soundcloud.com/search/users?q={q}&variant_ids=&facet=place&client_id={clientId}&limit=20");
+            await client.GetAsync(urlWithParams);
 
         var stringResult = await result.Content.ReadAsStringAsync();
         
