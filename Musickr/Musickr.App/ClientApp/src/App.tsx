@@ -1,15 +1,21 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
-import './custom.css';
+
 import {ChakraProvider} from "@chakra-ui/react";
-import {QueryClient, QueryClientProvider} from "react-query";
+
+import {
+  QueryClient, 
+  QueryClientProvider
+} from "react-query";
+import { Route, Routes } from 'react-router-dom';
+
+import AppRoutes from './AppRoutes';
+import theme from "./components/Utils/theme";
 
 const queryClient = new QueryClient();
 const App : React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Routes>
           {AppRoutes.map((route, index) => {
             const { element, ...rest } = route;
