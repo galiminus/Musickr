@@ -16,8 +16,16 @@ import {useDebounce} from "react-use";
 
 import useGetUsersAndPlaces from "../../Utils/Hooks/useGetUsersAndPlaces";
 
-const SearchBar = () => {
-  const [searchContent, setSearchContent] = useState("");
+type SearchBarProps = {
+  defaultValue?: string;
+  onChange: (value: string) => void;  
+};
+
+const SearchBar = ({ 
+  onChange,
+  defaultValue = ""
+} : SearchBarProps) => {
+  const [searchContent, setSearchContent] = useState(defaultValue);
   const [searchContentDebounced, setSearchContentDebounced] = useState("");
   
   const handleInput = (changeEvent: ChangeEvent<HTMLInputElement>) => {
@@ -32,10 +40,14 @@ const SearchBar = () => {
     [searchContent]
   );
   
-  const { isLoading, error, data } = useGetUsersAndPlaces(searchContentDebounced);
+  const { isLoading, data } = useGetUsersAndPlaces(searchContentDebounced);
   
   return (
-    <AutoComplete openOnFocus isLoading={isLoading}>
+    <AutoComplete 
+      openOnFocus 
+      isLoading={isLoading}
+      onChange={onChange}
+    >
       <AutoCompleteInput 
         variant="filled"
         h="12"

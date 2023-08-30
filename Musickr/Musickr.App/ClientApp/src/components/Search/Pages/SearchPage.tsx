@@ -1,12 +1,36 @@
-import React from "react";
-import {Button, Container, Heading, IconButton, Tooltip, useDisclosure, VStack} from "@chakra-ui/react";
-import PageContent from "../../Utils/PageContent";
+import React, {useCallback} from "react";
+
+import {
+  Heading, 
+  IconButton, 
+  Tooltip, 
+  useDisclosure, 
+  VStack
+} from "@chakra-ui/react";
 import {InfoIcon} from "@chakra-ui/icons";
+
+import {
+  createSearchParams, 
+  useNavigate
+} from "react-router-dom";
+
+import PageContent from "../../Utils/PageContent";
 import AboutModal from "../Components/AboutModal";
 import SearchBar from "../Components/SearchBar";
 
 const SearchPage = () => {
+  const navigate = useNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  
+  const onSearchBarChange = useCallback((value: string) => {
+    const params = { place: value };
+    
+    navigate({
+      pathname: "/player",
+      search: `?${createSearchParams(params)}`
+    })
+  }, 
+  [navigate]);
   
   return (
     <PageContent 
@@ -20,7 +44,7 @@ const SearchPage = () => {
         >
           Musickr
         </Heading>
-        <SearchBar />
+        <SearchBar onChange={onSearchBarChange} />
       </VStack>
       <Tooltip
         hasArrow
