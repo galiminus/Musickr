@@ -1,6 +1,6 @@
 namespace Musickr.App.Models;
 
-public class Music
+public class Track
 {
     // Title of the music
     public string Title { get; set; }

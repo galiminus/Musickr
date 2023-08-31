@@ -19,7 +19,7 @@ public class TracksController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IEnumerable<Music>> Get([FromQuery] string place = "")
+    public async Task<IEnumerable<Track>> Get([FromQuery] string place = "")
     {
         using var client = new HttpClient();
 
@@ -44,7 +44,7 @@ public class TracksController : ControllerBase
 
         if (jsonObject is null)
         {
-            return new List<Music>();
+            return new List<Track>();
         }
         
         // Get users collection
@@ -68,7 +68,7 @@ public class TracksController : ControllerBase
 
         var responses = responsesTask.Select((response) => response.Result);
 
-        var musics = new List<Music>();
+        var musics = new List<Track>();
         foreach (var response in responses)
         {
             stringResult = await response.Content.ReadAsStringAsync();
@@ -87,7 +87,7 @@ public class TracksController : ControllerBase
 
             foreach (var track in tracks)
             {
-                musics.Add(new Music()
+                musics.Add(new Track()
                 {
                     Author = (string)track["user"]["username"],
                     Title = (string)track["title"],
