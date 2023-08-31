@@ -8,7 +8,7 @@ const useGetUsersAndPlaces = (
   
   return useQuery(
     ['usersAndPlaces', q], 
-    () => fetch(`search?${createSearchParams(params)}`).then(res =>
+    () => fetch(`api/search?${createSearchParams(params)}`).then(res =>
       res.json()
     ),
     { enabled: !!q }

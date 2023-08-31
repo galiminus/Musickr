@@ -6,7 +6,7 @@ using Musickr.App.Models;
 namespace Musickr.App.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class SearchController : ControllerBase
 {
     private ILogger<SearchController> _logger;
