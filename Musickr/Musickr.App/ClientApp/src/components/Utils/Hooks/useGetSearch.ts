@@ -1,13 +1,13 @@
 import {useQuery} from "react-query";
 import {createSearchParams} from "react-router-dom";
 
-const useGetUsersAndPlaces = (
+const useGetSearch = (
   q: string
 ) => {
   const params = { q: q };
   
   return useQuery(
-    ['usersAndPlaces', q], 
+    ['search', q], 
     () => fetch(`api/search?${createSearchParams(params)}`).then(res =>
       res.json()
     ),
@@ -15,4 +15,4 @@ const useGetUsersAndPlaces = (
   );
 };
 
-export default useGetUsersAndPlaces;
+export default useGetSearch;
