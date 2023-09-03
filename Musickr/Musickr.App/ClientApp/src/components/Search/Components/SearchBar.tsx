@@ -14,7 +14,7 @@ import {
 
 import {useDebounce} from "react-use";
 
-import useGetUsersAndPlaces from "../../Utils/Hooks/useGetUsersAndPlaces";
+import useGetSearch from "../../Utils/Hooks/useGetSearch";
 
 type SearchBarProps = {
   defaultValue?: string;
@@ -40,7 +40,7 @@ const SearchBar = ({
     [searchContent]
   );
   
-  const { isLoading, data } = useGetUsersAndPlaces(searchContentDebounced);
+  const { isLoading, data } = useGetSearch(searchContentDebounced);
   
   return (
     <AutoComplete 
