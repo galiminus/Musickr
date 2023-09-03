@@ -1,93 +1,62 @@
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Musickr.App.Controllers.BaseControllers;
+using Musickr.App.Helpers;
 using Musickr.App.Models;
 
 namespace Musickr.App.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TracksController : ControllerBase
+public class TracksController : SoundcloudControllerBase
 {
     private ILogger<TracksController> _logger;
-    private IConfiguration _configuration;
     
-    public TracksController(ILogger<TracksController> logger, IConfiguration config)
+    public TracksController(ILogger<TracksController> logger, IConfiguration config) : base(config)
     {
         _logger = logger;
-        _configuration = config;
     }
     
     [HttpGet]
     public async Task<IEnumerable<Track>> Get([FromQuery] string place = "")
     {
+        var tracks = new List<Track>();
+        
         using var client = new HttpClient();
-
-        var clientId = _configuration["ClientId"];
         
-        var parameters = new List<KeyValuePair<string, string>>
-        {
-            new ("q", place),
-            new ("filter.place", place),
-            new ("facet", "place"),
-            new ("client_id", clientId),
-            new ("limit", "20")
-        };
-        var urlWithParams = QueryHelpers.AddQueryString("https://api-v2.soundcloud.com/search/users?", parameters);
-        
-        var result = 
-            await client.GetAsync(urlWithParams);
+        var search = await GetSearch(
+            q: place, 
+            place: place
+        );
 
-        var stringResult = await result.Content.ReadAsStringAsync();
-        
-        var jsonObject = JsonNode.Parse(stringResult);
-
-        if (jsonObject is null)
-        {
-            return new List<Track>();
-        }
+        if (search is null)
+            return tracks;
         
         // Get users collection
-        var users = jsonObject["collection"].AsArray();
+        var users = search["collection"].AsArray();
 
         // Get users tracks (15 users max for the moment)
-        var responsesTask = users.Take(15).Select((user) =>
+        var usersTracksTasks = users.Take(15).Select((user) =>
         {
             int userId = (int)user["id"];
-            
-            parameters = new List<KeyValuePair<string, string>>
-            {
-                new ("client_id", clientId)
-            };
-            urlWithParams = QueryHelpers.AddQueryString($"https://api-v2.soundcloud.com/users/{userId}/tracks?", parameters);
-        
-            return client.GetAsync(urlWithParams);
+            return GetUserTracks(userId);
         });
 
-        await Task.WhenAll(responsesTask);
+        await Task.WhenAll(usersTracksTasks);
 
-        var responses = responsesTask.Select((response) => response.Result);
-
-        var musics = new List<Track>();
-        foreach (var response in responses)
+        var usersTracks = usersTracksTasks.Select((response) => response.Result);
+        
+        foreach (var jsonObject in usersTracks)
         {
-            stringResult = await response.Content.ReadAsStringAsync();
-        
-            jsonObject = JsonNode.Parse(stringResult);
-
-            if (jsonObject is null)
-            {
-                continue;
-            }
-        
-            // Get users collection
-            var tracks = jsonObject["collection"]
+            // Get user tracks collection
+            var userTracks = jsonObject["collection"]
                 .AsArray()
                 .Take(3); // 3 Tracks per artist max
 
-            foreach (var track in tracks)
+            foreach (var track in userTracks)
             {
-                musics.Add(new Track()
+                tracks.Add(new Track()
                 {
                     Author = (string)track["user"]["username"],
                     Title = (string)track["title"],
@@ -97,8 +66,8 @@ public class TracksController : ControllerBase
         }
         
         // Shuffle list !
-        Random rnd = new Random();
-        var shuffledTracks = musics.OrderBy(_ => rnd.Next()).ToList();
+        var random = new Random();
+        var shuffledTracks = tracks.OrderBy(_ => random.Next()).ToList();
         
         return shuffledTracks;
     }
