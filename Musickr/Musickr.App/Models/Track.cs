@@ -2,12 +2,12 @@ namespace Musickr.App.Models;
 
 public class Track
 {
-    // Title of the music
+    // Title of the track
     public string Title { get; set; }
     
-    // Author of the music
+    // Author of the track
     public string Author { get; set; }
     
-    // SoundCloud URL
+    // SoundCloud URL of the track
     public string Url { get; set; }
 }
