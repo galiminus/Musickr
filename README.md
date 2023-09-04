@@ -1,6 +1,6 @@
 # Musickr
 
-Musickr is a Web App for listen and watch creations from authors of a specific place ! It use the SoundCloud and Flickr database.
+Musickr is a Web App that lets you listen to and watch the creations of authors from a specific location! It uses SoundCloud and Flickr databases.
 
 The application is based on ASP.NET Core (C#) and ReactJS (TypeScript).
 
