@@ -6,12 +6,18 @@ The application is based on ASP.NET Core (C#) and ReactJS (TypeScript).
 
 ## Start the app
 
-Firstly, you need to install .NET 7 and NodeJS v18.
+First, you need to install .NET 7 and NodeJS v18.
+
+```
+brew install dotnet
+brew install node # Or node@18
+```
+
 > .NET 7 works on any OS (MacOS, Linux or Windows), and works natively with Apple Silicon.
 
-Then, go to `Musickr.App/ClientApp` and do a `npm install`.
+Then, go to `Musickr/Musickr.App/ClientApp` and do a `npm install`.
 
-Finally, go to `Musickr.App` and launch the application with `dotnet watch run debug` !
+Finally, go to `Musickr/Musickr.App` and launch the application with `dotnet watch run debug` !
 
 ## Authors
 
